@@ -3,15 +3,12 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; // Sağ ok simgesi
-import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Sol ok simgesi
+import { useSwipeable } from "react-swipeable";
 import "./liste.css";
 
 export default function Liste() {
   const [currentDay, setCurrentDay] = useState(2);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [swipeDirection, setSwipeDirection] = useState("");
 
   const mealData = [
     {
@@ -111,7 +108,6 @@ export default function Liste() {
       ],
     },
   ];
-
   const handlePrevDay = () => {
     if (currentDay > 0) {
       setCurrentDay((prevDay) => prevDay - 1);
@@ -126,38 +122,21 @@ export default function Liste() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle("dark", !isDarkMode);
-  };
-
-  const handleTouchStart = (e) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = (e) => {
-    const touchEndX = e.changedTouches[0].clientX;
-    const distance = touchStartX - touchEndX;
-
-    if (distance > 50) {
-      setSwipeDirection("left");
-      handleNextDay();
-    } else if (distance < -50) {
-      setSwipeDirection("right");
-      handlePrevDay();
-    }
   };
 
   const { date, breakfast, dinner } = mealData[currentDay];
 
+  const handlers = useSwipeable({
+    onSwipedLeft: handleNextDay,
+    onSwipedRight: handlePrevDay,
+  });
+
   return (
-    <div
-      className={`list ${isDarkMode ? "dark" : "light"} ${swipeDirection}`}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
+    <div className={`list ${isDarkMode ? "dark" : "light"}`} {...handlers}>
       <div className="mode-toggle" onClick={toggleDarkMode}>
         {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
       </div>
-      <div className={`card ${swipeDirection}`}>
+      <div className="card">
         <div className="listH1">
           <h1>{date}</h1>
         </div>
@@ -184,20 +163,20 @@ export default function Liste() {
           </ul>
         </div>
       </div>
-      <div className="nav-buttons">
+      <div className="navigation-buttons">
         <button
           onClick={handlePrevDay}
           className="nav-button left"
           disabled={currentDay === 0}
         >
-          <ArrowBackIcon />
+          ◀
         </button>
         <button
           onClick={handleNextDay}
           className="nav-button right"
           disabled={currentDay === mealData.length - 1}
         >
-          <ArrowForwardIcon />
+          ▶
         </button>
       </div>
       <p style={{ textAlign: "center", marginTop: "20px" }}>

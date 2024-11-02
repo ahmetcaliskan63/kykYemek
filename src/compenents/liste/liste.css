@@ -1,4 +1,3 @@
-/* Genel Stil */
 body,
 html {
   display: flex;
@@ -7,6 +6,7 @@ html {
   height: 100vh;
   margin: 0;
   font-family: "Arial", sans-serif;
+  transition: background-color 0.3s ease; /* Geçiş efekti ekleyin */
 }
 
 .list {
@@ -17,10 +17,8 @@ html {
   flex-direction: column;
   padding: 10px;
   width: 100%;
-  overflow: hidden; /* Taşan içeriği gizler */
 }
 
-/* Tema Modu */
 .light {
   background-color: #f4f6f8; /* Hafif gri tonunda arka plan */
   color: #2b2b2b; /* Ana yazı rengi */
@@ -31,7 +29,6 @@ html {
   color: #d1d1d1; /* Ana yazı rengi */
 }
 
-/* Kart ve İçerik Stili */
 .card {
   background-color: #ffffff; /* Aydınlık modda hafif bir beyaz */
   padding: 20px;
@@ -40,7 +37,8 @@ html {
   max-width: 320px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Yumuşak gölge */
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.5s ease; /* Animasyon eklendi */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative; /* Değiştirildi */
 }
 
 .dark .card {
@@ -48,7 +46,6 @@ html {
   color: #d1d1d1; /* Karanlık modda kart yazı rengi */
 }
 
-/* Tema Toggle Butonu */
 .mode-toggle {
   position: fixed;
   top: 20px;
@@ -63,7 +60,6 @@ html {
   color: #d1d1d1; /* Karanlık modda ikon rengi */
 }
 
-/* Başlık */
 .listH1 {
   background-color: #e3ecf8; /* Aydınlık modda hafif mavi ton */
   padding: 12px;
@@ -85,11 +81,17 @@ html {
   color: #d1d1d1; /* Karanlık modda tarih başlığı rengi */
 }
 
-/* Navigasyon Düğmeleri */
+.nav-buttons {
+  position: absolute; /* Değiştirildi */
+  bottom: 10px; /* Düğmelerin altına yerleştirildi */
+  left: 50%; /* Ortalanması için ayarlandı */
+  transform: translateX(-50%); /* Düğmeleri ortalamak için */
+  display: flex;
+  justify-content: space-between; /* İki buton arasında boşluk */
+  width: 100%; /* Düğmelerin tam genişlikte olmasını sağlamak için */
+}
+
 .nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   background: none;
   border: none;
   font-size: 28px;
@@ -106,21 +108,12 @@ html {
   color: #2980b9;
 }
 
-.nav-button.left {
-  left: -50px;
-}
-
-.nav-button.right {
-  right: -50px;
-}
-
 .nav-button:disabled {
   color: #bdc3c7;
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-/* Öğün Başlıkları */
 .meal-section h2 {
   font-size: 24px;
   margin: 10px 0;
@@ -148,7 +141,6 @@ html {
   color: inherit;
 }
 
-/* Geliştirici Bağlantısı */
 .developer-link {
   color: inherit;
   font-weight: bold;
@@ -179,7 +171,6 @@ html {
   }
 }
 
-/* İkon Renkleri ve Stil Ayarları */
 .meal-section h2 svg {
   margin-right: 8px;
   transition: color 0.3s ease;
@@ -192,75 +183,31 @@ html {
 .dark .meal-section h2 svg {
   color: #5df7f7; /* Karanlık modda ikon rengi */
 }
-
-/* Kaydırma Animasyonu */
-.left {
-  transform: translateX(-100%); /* Sol kaydırma için */
-}
-
-.right {
-  transform: translateX(100%); /* Sağ kaydırma için */
-}
-
-.card.left {
-  animation: slideOutLeft 0.5s forwards; /* Soldan kaydırma animasyonu */
-}
-
-.card.right {
-  animation: slideOutRight 0.5s forwards; /* Sağdan kaydırma animasyonu */
-}
-
-@keyframes slideOutLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes slideOutRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-/* Navigasyon Düğmeleri */
-.nav-buttons {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.navigation-buttons {
   position: absolute;
-  bottom: 20px; /* Kartın altında görünür olacak şekilde ayarlandı */
-  left: 0;
-  padding: 0 20px; /* Düğmeler arasında boşluk */
-  z-index: 10; /* Diğer öğelerin üzerinde görünmesi için */
+  bottom: 20px; /* Butonların alt kısmı */
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Butonları sağ ve sola yerleştirir */
+  padding: 0 20px; /* Kenar boşlukları ekleyin */
 }
 
-/* Düğme Stili */
 .nav-button {
-  background: none; /* Arka planı kaldır */
-  border: none; /* Kenarları kaldır */
-  cursor: pointer; /* İşaretçi şeklini değiştir */
-  font-size: 32px; /* İkon boyutunu ayarlayın */
-  color: inherit; /* Tema moduna göre renk alır */
-  transition: color 0.3s ease; /* Renk geçişi */
-  display: flex; /* İçerikleri düzgün yerleştirmek için */
-  align-items: center; /* Dikey hizalama */
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #5dade2;
+  transition: color 0.3s ease, transform 0.3s ease; /* Renk ve kaydırma animasyonu */
 }
 
 .nav-button:hover {
-  color: #2980b9; /* Hover efekti */
-}
-
-.dark .nav-button {
-  color: #a2c8e5; /* Karanlık modda ikon rengi */
+  color: #2980b9;
+  transform: scale(1.2); /* Hover animasyonu */
 }
 
 .nav-button:disabled {
-  color: #bdc3c7; /* Devre dışı durumda renk */
-  cursor: not-allowed; /* İzin verilmiyor simgesi */
-  opacity: 0.5; /* Daha şeffaf göster */
+  color: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
