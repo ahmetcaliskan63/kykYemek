@@ -17,6 +17,7 @@ html {
   flex-direction: column;
   padding: 10px;
   width: 100%;
+  overflow: hidden; /* Taşan içeriği gizler */
 }
 
 /* Tema Modu */
@@ -28,12 +29,6 @@ html {
 .dark {
   background-color: #1e1e1e; /* Koyu gri arka plan */
   color: #d1d1d1; /* Ana yazı rengi */
-  /* Tema geçişinde daha iyi görünmesi için varsayılan öğelerin rengini belirleyin */
-}
-
-.dark body,
-.dark html {
-  background-color: #1e1e1e; /* Karanlık modda tüm sayfa arka planı */
 }
 
 /* Kart ve İçerik Stili */
@@ -45,7 +40,7 @@ html {
   max-width: 320px;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Yumuşak gölge */
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.5s ease; /* Animasyon eklendi */
 }
 
 .dark .card {
@@ -197,9 +192,75 @@ html {
 .dark .meal-section h2 svg {
   color: #5df7f7; /* Karanlık modda ikon rengi */
 }
-/* Tema Modu */
-.dark body,
-.dark html {
-  background-color: #1e1e1e; /* Karanlık modda tüm sayfa arka planı */
-  color: #d1d1d1;
+
+/* Kaydırma Animasyonu */
+.left {
+  transform: translateX(-100%); /* Sol kaydırma için */
+}
+
+.right {
+  transform: translateX(100%); /* Sağ kaydırma için */
+}
+
+.card.left {
+  animation: slideOutLeft 0.5s forwards; /* Soldan kaydırma animasyonu */
+}
+
+.card.right {
+  animation: slideOutRight 0.5s forwards; /* Sağdan kaydırma animasyonu */
+}
+
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideOutRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+/* Navigasyon Düğmeleri */
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: absolute;
+  bottom: 20px; /* Kartın altında görünür olacak şekilde ayarlandı */
+  left: 0;
+  padding: 0 20px; /* Düğmeler arasında boşluk */
+  z-index: 10; /* Diğer öğelerin üzerinde görünmesi için */
+}
+
+/* Düğme Stili */
+.nav-button {
+  background: none; /* Arka planı kaldır */
+  border: none; /* Kenarları kaldır */
+  cursor: pointer; /* İşaretçi şeklini değiştir */
+  font-size: 32px; /* İkon boyutunu ayarlayın */
+  color: inherit; /* Tema moduna göre renk alır */
+  transition: color 0.3s ease; /* Renk geçişi */
+  display: flex; /* İçerikleri düzgün yerleştirmek için */
+  align-items: center; /* Dikey hizalama */
+}
+
+.nav-button:hover {
+  color: #2980b9; /* Hover efekti */
+}
+
+.dark .nav-button {
+  color: #a2c8e5; /* Karanlık modda ikon rengi */
+}
+
+.nav-button:disabled {
+  color: #bdc3c7; /* Devre dışı durumda renk */
+  cursor: not-allowed; /* İzin verilmiyor simgesi */
+  opacity: 0.5; /* Daha şeffaf göster */
 }

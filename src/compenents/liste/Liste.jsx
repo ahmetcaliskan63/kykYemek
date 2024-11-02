@@ -3,12 +3,15 @@ import FreeBreakfastIcon from "@mui/icons-material/FreeBreakfast";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward"; // Sağ ok simgesi
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"; // Sol ok simgesi
 import "./liste.css";
 
 export default function Liste() {
   const [currentDay, setCurrentDay] = useState(2);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState("");
 
   const mealData = [
     {
@@ -132,9 +135,13 @@ export default function Liste() {
 
   const handleTouchEnd = (e) => {
     const touchEndX = e.changedTouches[0].clientX;
-    if (touchStartX - touchEndX > 50) {
+    const distance = touchStartX - touchEndX;
+
+    if (distance > 50) {
+      setSwipeDirection("left");
       handleNextDay();
-    } else if (touchEndX - touchStartX > 50) {
+    } else if (distance < -50) {
+      setSwipeDirection("right");
       handlePrevDay();
     }
   };
@@ -143,21 +150,14 @@ export default function Liste() {
 
   return (
     <div
-      className={`list ${isDarkMode ? "dark" : "light"}`}
+      className={`list ${isDarkMode ? "dark" : "light"} ${swipeDirection}`}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
       <div className="mode-toggle" onClick={toggleDarkMode}>
         {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
       </div>
-      <button
-        onClick={handlePrevDay}
-        className="nav-button left"
-        disabled={currentDay === 0}
-      >
-        ◀
-      </button>
-      <div className="card">
+      <div className={`card ${swipeDirection}`}>
         <div className="listH1">
           <h1>{date}</h1>
         </div>
@@ -184,13 +184,22 @@ export default function Liste() {
           </ul>
         </div>
       </div>
-      <button
-        onClick={handleNextDay}
-        className="nav-button right"
-        disabled={currentDay === mealData.length - 1}
-      >
-        ▶
-      </button>
+      <div className="nav-buttons">
+        <button
+          onClick={handlePrevDay}
+          className="nav-button left"
+          disabled={currentDay === 0}
+        >
+          <ArrowBackIcon />
+        </button>
+        <button
+          onClick={handleNextDay}
+          className="nav-button right"
+          disabled={currentDay === mealData.length - 1}
+        >
+          <ArrowForwardIcon />
+        </button>
+      </div>
       <p style={{ textAlign: "center", marginTop: "20px" }}>
         <a
           href="https://www.linkedin.com/in/ahmetcaliskann/"
