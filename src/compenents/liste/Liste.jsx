@@ -7,7 +7,8 @@ import "./liste.css";
 
 export default function Liste() {
   const [currentDay, setCurrentDay] = useState(2);
-  const [isDarkMode, setIsDarkMode] = useState(false); // Tema durumu
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
 
   const mealData = [
     {
@@ -122,17 +123,32 @@ export default function Liste() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+    document.body.classList.toggle("dark", !isDarkMode);
+  };
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].clientX;
+    if (touchStartX - touchEndX > 50) {
+      handleNextDay();
+    } else if (touchEndX - touchStartX > 50) {
+      handlePrevDay();
+    }
   };
 
   const { date, breakfast, dinner } = mealData[currentDay];
 
   return (
-    <div className={`list ${isDarkMode ? "dark" : "light"}`}>
-      {" "}
-      {/* Tema sınıfı */}
+    <div
+      className={`list ${isDarkMode ? "dark" : "light"}`}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="mode-toggle" onClick={toggleDarkMode}>
-        {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}{" "}
-        {/* Işık / Karanlık modu ikonu */}
+        {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
       </div>
       <button
         onClick={handlePrevDay}
